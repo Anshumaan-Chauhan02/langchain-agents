@@ -1,76 +1,206 @@
-# LangChain
+# 🧠 LangChain + Ollama Local Agentic Systems
 
-LangCHain is a powerful Python library for agentic systems. It allows us to do a lot of abstraction in the code and helps us to create agents easily. LangChain ecosystem folllows a similar pattern so the concepts learnt here can be applied to LangGraph, LangSmith, etc. Moreover, we can later on customizer the code and remocve the abstraction to make our code more customized for our own needs. 
+> Build, customize, and experiment with LangChain-powered agents running local LLMs through Ollama!
 
-We will be using `ollama` package for accessing LLMs. 
+---
 
-Let's setup the project and install all the dependencies using `uv`. 
-1. `uv init langchain-agents`
-2. `uv venv --python 3.12.7`
-   1. To check list of all python version installed on your system run `uv python list`
-3. Activate the virtual env -> `source .venv/bin/activate`
-4. `uv add langchain-core langchain-ollama langsmith docarray langchain-community ipykernel langchain fastapi uvicorn google-search-results ollama`
-5. Prerequisites for using ollama python library is that it should be installed on your system. For more information check [installation guide](https://github.com/ollama/ollama-python).
-   1. If working on WSL, install ollama on your system using
+## 📘 Overview
+
+**LangChain** is a powerful Python framework for building agentic systems using LLMs. It enables abstraction of components, making it easier to construct agents, chains, memory-aware conversations, and more. This abstraction extends across the LangChain ecosystem including:
+
+- **LangGraph**: Graph-based reasoning framework.
+- **LangSmith**: LLM observability and debugging tool.
+- **LangFlow**: Visual editor for LangChain apps.
+- **LangServe**: Server-ready LangChain deployments.
+
+In this project, we'll walk through setting up a LangChain project using the **Ollama** Python library to run LLMs locally and customize agent behavior.
+
+---
+
+## 🚀 Project Setup
+
+We'll use [`uv`](https://github.com/astral-sh/uv), a fast Python package and environment manager written in Rust.
+
+### 🧰 Installation Steps
+
+1. **Initialize the project**:
+   ```bash
+   uv init langchain-agents
    ```
-   curl -fsSL https://ollama.com/install.sh | sh
+
+2. **Create a virtual environment**:
+
+   ```bash
+   uv venv --python 3.12.7
    ```
-6. Pull Qwen model -> `ollama pull qwen3:0.6b`
-7. To confirm everything is working fine run `uv run ollama_basics.py`
 
-You can check more details such as options to edit model settings in [Ollama REST API](https://github.com/ollama/ollama/blob/main/docs/api.md).
+   👉 To see all Python versions on your system:
 
-![](docs/imgs/ollama_model_options.png)
+   ```bash
+   uv python list
+   ```
+
+3. **Activate the virtual environment**:
+
+   ```bash
+   source .venv/bin/activate
+   ```
+
+4. **Install dependencies**:
+
+   ```bash
+   uv add \
+     langchain-core langchain-ollama langsmith docarray \
+     langchain-community ipykernel langchain \
+     fastapi uvicorn google-search-results ollama
+   ```
+
+5. **Install Ollama**:
+
+   * Follow the [official installation guide](https://github.com/ollama/ollama-python).
+   * **If using WSL**:
+
+     ```bash
+     curl -fsSL https://ollama.com/install.sh | sh
+     ```
+
+6. **Pull a model** (e.g., Qwen 0.6b):
+
+   ```bash
+   ollama pull qwen3:0.6b
+   ```
+
+7. **Test the setup**:
+
+   ```bash
+   uv run ollama_basics.py
+   ```
+
+---
+
+## 🧪 Ollama Configuration Tips
+
+🧰 You can find more advanced model options and configuration settings in the [Ollama REST API Docs](https://github.com/ollama/ollama/blob/main/docs/api.md).
+
+![Ollama Settings](docs/imgs/ollama_model_options.png)
+
+---
+
+## 🖥️ VS Code + WSL Quick Fixes
+
+* ✅ **Interpreter selection**:
+
+  * `Ctrl + Shift + P` → "Python: Select Interpreter"
+  * Enter path: `.venv/bin/python`, or use `python3` or `python3.12`
+
+* 🔄 **Reload Window**:
+
+  * `Ctrl + Shift + P` → "Reload Window"
+
+---
+
+## ⚠️ Model Selection Note
+
+We're using non-instruction-tuned models like **DeepSeek-R1** and **Qwen3**, which can lead to unpredictable or incoherent outputs.
+
+👉 It’s **highly recommended** to use **instruction-tuned models** like **Llama3** for more reliable and contextual responses.
+
+---
 
 
-### Quick Fixes if opening VS Code in WSL
-1. Try selecting the correct intrerpreter for Pylance to access libraries, etc. 
-   1. Select Interpreter (either from bottom right of the screen or by choosing it by `Ctrl + Shift + P`) -> Enter Interpreter Path -> `.venv/bin/python` , can choose `python3` or `python3.12`.  
-2. Try reloading the Window -> `Ctrl + Shift + P` -> `Reload Window` 
+### 🧱 LangChain Core
 
+Foundation layer that provides abstractions for:
 
-THroughout we are using a mix of DeepSeek-R1 and Qwen3 models -> non instruction tuned versions, that is why we are observing such wierd responses. It is better to use instruction tuned models for example Llama3 to get better experience.
+* Prompts
+* Memory
+* Chains
+* Tools
+* Agents
 
-# LangChain Ecosystem
-### LangChain Core
-Foundational fframework that provides abstractions for building LLM-driven applications.
+---
 
-### LangSmith
+## ✍️ Prompt Basics
 
+LangChain recognizes three prompt types:
 
-### LangGraph
+1. **System Prompt** 🧠
+   Provides role and behavior for the LLM (e.g., “You are a helpful assistant…”)
 
-### LangServe
+2. **User Prompt** 👤
+   Carries the task or question from the user.
 
-### LangFlow
+3. **AI Prompt** 🤖
+   LLM’s generated response to the user.
 
-## LangChain Prompt Basics 
-There are essentially 3 types of prompts:
-1. System Prompts - THey provide LLM information about what its objective is and how should it go about to solve that objective.  
-2. User Prompts - It usually contains the context and the problem statement that the user wants LLM to solve
-3. AI Prompts - It is the response generated by the LLM for the user prompt
+LangChain offers templates to compose and manage these prompt types effectively.
 
-LangChain has several templates for each one of them.
+---
 
-## LangSmith
-LangSmith is part of the LangChain ecoystem and is used to track/see how your LLMs and agents are doing. It focuses on debugigng, testing, evaluating and monitoring LLM applications.
+## 🧪 LangSmith
 
-Using LangSmith needs an API key, however there is a freee tier version available, which will be sufficient for now.
+A debugging, testing, and observability tool for LLM applications.
 
-## Prompting
-Usually prompts will consist of:
-1. Rule for our LLM -> How the LLM should behave and some instructions on objectives, etc. We need to provide good amount of context, but do not overdo it
-2. Context - External information we are feeding into LLM that will help the LLM to solve the objective (It is also called Retireval Augmented Information) - as we are providing external info to LLM. User/Assistant/Tool
-3. Question - Task that you want it to solve. User 
-4. Answer - This is the output we get from LLM
+* Monitors how your agents behave
+* Tracks prompts, outputs, and traces
+* Requires an API key (free tier available)
 
-## Chat Memory
-Coversational Memory allows LLMs to remmeber previous information, otherwise LLMs just responsd to the latest message, and that is not conversational. 
-- ConversationBufferMemory => Store all messages in a list 
-- ConversationBufferWindowMemory => Does not reatin all messages, retains messages within the window size specified 
-- ConversationSummaryMemory => Summarize interactions and store it
-- ConversationSummaryBufferMemory => List of recent messages (a limit on tokens) + Summary
+---
 
+## 💬 Prompting Strategy
 
+An effective prompt contains:
 
+1. **Rules**: Behavior definition for the model.
+2. **Context**: External info (a.k.a. Retrieval-Augmented Generation).
+3. **Question**: What the user wants.
+4. **Answer**: What the LLM returns.
 
+---
+
+## 🧠 Chat Memory in LangChain
+
+LLMs don’t retain previous inputs by default. LangChain provides memory wrappers to retain conversation history.
+
+### 🧠 Memory Types
+
+| Type                              | Description                                 |
+| --------------------------------- | ------------------------------------------- |
+| `ConversationBufferMemory`        | Stores all past messages in memory.         |
+| `ConversationBufferWindowMemory`  | Retains only the last N messages.           |
+| `ConversationSummaryMemory`       | Summarizes entire conversation history.     |
+| `ConversationSummaryBufferMemory` | Mix of buffer + summary using token limits. |
+
+⚠️ Some of these are deprecated — prefer using `RunnableWithMessageHistory`.
+
+---
+
+## 🛠 Agents in LangChain
+
+Agents enhance LLMs by allowing tool usage (e.g., search, calculators, databases).
+
+🔧 **Key points when defining tools**:
+
+* Use docstrings to explain when and why the tool should be used.
+* Provide self-explanatory argument names.
+* Add clear type annotations for both input and output.
+
+Example:
+
+```python
+def get_weather(city: str) -> str:
+    """Gets current weather for the provided city."""
+    ...
+```
+
+---
+
+## 🧬 LangChain Expression Language (LCEL)
+
+LCEL allows composing LLM chains declaratively and functionally — similar to RxJS or functional streams.
+
+✅ Ideal for:
+
+* Chaining prompts
+* Handling memory
+* Creating reusable LLM components
